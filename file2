@@ -1,0 +1,137 @@
+<script type="text/javascript">
+
+    // Use this function to access the current TM1 Web object
+    function getActiveWidget() {
+        return dijit.byId("tabContainer").selectedChildWidget;
+    };
+
+    // Rebuild the active form in a Websheet
+    // ----------------------
+    function rebuildActiveForms() {
+        loadedWebsheet.rebuildActiveForms().then(
+            function() {
+            	console.debug("Active form rebuild completed.");
+        	},
+        	function(message) {
+        	    console.error(message);
+        	}
+        );
+    };
+    
+
+    // Recalculate a Websheet
+    // ----------------------
+    function recalculate() {
+        getActiveWidget().recalculate().then(
+            function() {
+            	console.debug("Recalculate completed successfully.");
+        	},
+        	function(message) {
+        	    console.error(message);
+        	}
+        );
+    };
+
+    // Set the AutoRecalcMode for a CubeViewer object
+    // ----------------------
+    function toggleAutoRecalcMode(enabled) {
+	      loadedCubeview.set("automaticRecalculation", enabled).then(
+            function() {
+                var message = enabled ? 
+                    "Enabling auto recalc completed successfully." :
+                    "Disabling auto recalc completed successfully.";
+            	console.debug(message);
+	        },
+	        function(message) {
+	       	    console.error(message);
+	        }
+        );
+    };
+
+    // Turn on/off the dimension title bar for a CubeViewer object
+    // ----------------------
+    function toggleDimensionBar(visible) {
+	      loadedCubeview.set("dimensionBarVisible", visible);
+    };
+
+    // Reset a CubeViewer object to it's original view
+    // ----------------------
+    function resetView() {
+        loadedCubeview.reset().then(
+            function() {
+            	console.debug("View reset completed successfully.");
+        	},
+        	function(message) {
+        	    console.error(message);
+        	}
+        );
+    };
+
+    // Save a view for a CubeViewer object
+    // ----------------------
+    function saveView() {
+        loadedCubeview.save().then(
+            function() {
+            	console.debug("Saving view completed successfully.");
+        	},
+        	function(message) {
+        	    console.error(message);
+        	}
+        );
+    };
+
+    // Close a Websheet or CubeViewer object
+    // ----------------------
+    function close() {
+        var widget = getActiveWidget();
+        dijit.byId("tabContainer").removeChild(widget);
+        widget.destroy();
+    };
+
+    // Set the display mode for a CubeViewer object
+    // Valid values include Grid, Chart, GridAndChart
+    // ----------------------
+    function setDisplayMode() {
+        
+        require(["tm1web/cubeview/DisplayMode"], function(DisplayMode) {
+	        loadedCubeview.set("displayMode", DisplayMode.Grid).then(
+	            function() {
+	            	console.debug("Display mode change completed successfully.");
+	        	},
+	        	function(message) {
+	        	    console.error(message);
+	        	}
+	        );
+        });
+    };
+
+    // Set the chart type for a CubeViewer object
+    // ----------------------
+    function setChartType() {
+        
+        require(["tm1web/cubeview/ChartType"], function(ChartType) {
+            loadedCubeview.set("chartType", ChartType.Pie).then(
+                function() {
+                console.debug("Chart type change completed successfully.");
+            	},
+            	function(message) {
+                console.error(message);
+            	}
+            );
+        });
+    };
+
+    // Logout from the session associated with the specified TM1 Web object
+    // ----------------------
+    function logout() {
+        getActiveWidget().logout().then(
+			function() {
+			    console.debug("Session destroyed.");
+			},
+			function(message) {
+			    console.error(message);
+			}
+        );
+    };
+
+</script>
